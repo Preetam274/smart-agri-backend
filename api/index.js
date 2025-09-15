@@ -10,20 +10,22 @@ const app = express();
 app.use(cors({ origin: "*" }));
 app.use(express.json());
 
-// 🔹 Initialize Firebase
-admin.initializeApp({
-  credential: admin.credential.cert({
-    projectId: process.env.FIREBASE_PROJECT_ID,
-    clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
-    privateKey: process.env.FIREBASE_PRIVATE_KEY?.replace(/\\n/g, "\n"),
-  }),
-  databaseURL: process.env.FIREBASE_DB_URL,
-});
+// 🔹 Initialize Firebase (only once, prevent re-initialization on hot reloads)
+if (!admin.apps.length) {
+  admin.initializeApp({
+    credential: admin.credential.cert({
+      projectId: process.env.FIREBASE_PROJECT_ID,
+      clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
+      privateKey: process.env.FIREBASE_PRIVATE_KEY?.replace(/\\n/g, "\n"),
+    }),
+    databaseURL: process.env.FIREBASE_DB_URL,
+  });
+}
 
 const db = admin.database();
 
 // Routes
-app.get("/soil-data", async (req, res) => {
+app.get("/api/soil-data", async (req, res) => {
   try {
     const snapshot = await db.ref("soil").once("value");
     res.json(snapshot.val());
@@ -32,7 +34,7 @@ app.get("/soil-data", async (req, res) => {
   }
 });
 
-app.get("/cattle-data", async (req, res) => {
+app.get("/api/cattle-data", async (req, res) => {
   try {
     const snapshot = await db.ref("cattle").once("value");
     res.json(snapshot.val());
@@ -41,7 +43,7 @@ app.get("/cattle-data", async (req, res) => {
   }
 });
 
-app.post("/chat", async (req, res) => {
+app.post("/api/chat", async (req, res) => {
   const { message } = req.body;
   try {
     const response = await axios.post(
@@ -62,3 +64,5 @@ app.post("/chat", async (req, res) => {
   }
 });
 
+// ✅ Export Express app as Vercel handler
+export default app;
