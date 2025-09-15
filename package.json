@@ -1,0 +1,17 @@
+{
+  "name": "smart-agri-backend",
+  "version": "1.0.0",
+  "description": "Smart Agriculture Backend with Firebase and Gemini API",
+  "type": "module",
+  "scripts": {
+    "start": "vercel dev",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": ["smart-agriculture", "firebase", "gemini", "backend"],
+  "author": "Preetam",
+  "license": "ISC",
+  "dependencies": {
+    "firebase-admin": "^13.5.0",
+    "node-fetch": "^3.4.0"
+  }
+}
