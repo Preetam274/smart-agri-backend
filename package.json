@@ -4,14 +4,24 @@
   "description": "Smart Agriculture Backend with Firebase and Gemini API",
   "type": "module",
   "scripts": {
-    "start": "vercel dev",
+    "dev": "vercel dev",
+    "start": "node api/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": ["smart-agriculture", "firebase", "gemini", "backend"],
+  "keywords": [
+    "smart-agriculture",
+    "firebase",
+    "gemini",
+    "backend"
+  ],
   "author": "Preetam",
   "license": "ISC",
   "dependencies": {
+    "express": "^4.19.2",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "axios": "^1.6.8",
     "firebase-admin": "^13.5.0",
-    "node-fetch": "^3.4.0"
+    "node-fetch": "3.3.2"
   }
 }
