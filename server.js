@@ -3,7 +3,6 @@ import cors from "cors";
 import dotenv from "dotenv";
 import axios from "axios";
 import admin from "firebase-admin";
-import fs from "fs";
 
 dotenv.config();
 
@@ -11,14 +10,13 @@ const app = express();
 app.use(cors({ origin: "http://localhost:3000" })); // allow React frontend
 app.use(express.json());
 
-// 🔹 Load Firebase Service Account JSON using fs
-const serviceAccount = JSON.parse(
-  fs.readFileSync("./firebaseServiceAccount.json", "utf8")
-);
-
-// 🔹 Initialize Firebase
+// 🔹 Initialize Firebase using environment variables (no JSON file!)
 admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount),
+  credential: admin.credential.cert({
+    projectId: process.env.FIREBASE_PROJECT_ID,
+    clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
+    privateKey: process.env.FIREBASE_PRIVATE_KEY?.replace(/\\n/g, "\n"),
+  }),
   databaseURL: process.env.FIREBASE_DB_URL,
 });
 
